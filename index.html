@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Street Food</title>
+  <meta name="description" content="My Street Food – burgers, hotdogs, fries, milkshakes and more in Gingoog City." />
+  <style>
+    :root {
+      --bg: #120a07;
+      --bg-soft: #1b100c;
+      --card: rgba(22, 12, 8, 0.86);
+      --card-2: rgba(31, 18, 12, 0.92);
+      --text: #fff7ef;
+      --muted: #efccb3;
+      --line: rgba(255,255,255,0.12);
+      --orange: #e85d04;
+      --red: #c1121f;
+      --yellow: #ffb703;
+      --black: #111111;
+      --green: #7bd389;
+      --shadow: 0 18px 56px rgba(0,0,0,0.36);
+      --radius: 26px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(232,93,4,0.18), transparent 32%),
+        linear-gradient(180deg, #180d08 0%, #0f0906 100%);
+      line-height: 1.55;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: rgba(12, 7, 5, 0.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+    }
+
+    .brand span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav a {
+      font-size: 0.95rem;
+      color: #fff2e8;
+      opacity: 0.92;
+    }
+
+    .nav a:hover { opacity: 1; color: var(--yellow); }
+
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px;
+      background: rgba(255,255,255,0.04);
+      gap: 4px;
+    }
+
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .lang-switch button.active {
+      background: linear-gradient(135deg, var(--yellow), #ffcf5a);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border-radius: 12px;
+      width: 46px;
+      height: 46px;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .hero {
+      padding: 72px 0 48px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-visual {
+      position: relative;
+      min-height: 560px;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-copy {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.72)),
+        linear-gradient(135deg, rgba(193,18,31,0.28), rgba(232,93,4,0.16));
+    }
+
+    .hero-visual {
+      padding: 34px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.58)),
+        radial-gradient(circle at top right, rgba(255,183,3,0.12), transparent 35%),
+        rgba(19, 12, 8, 0.96);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-logo-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      margin-bottom: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      overflow: hidden;
+    }
+
+    .hero-logo {
+      width: 100%;
+      max-width: 560px;
+      max-height: 340px;
+      object-fit: contain;
+    }
+
+    .hero-info {
+      width: 100%;
+      background: rgba(10, 8, 7, 0.56);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-info h3,
+    .feature-box h3,
+    .menu-copy h3,
+    .review-card h3,
+    .rating-card h3,
+    .section-head h2,
+    .fruity-content h3 {
+      margin-top: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-info h3 { margin-bottom: 18px; font-size: 1.7rem; }
+
+    .hero-info-item + .hero-info-item {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-info-label {
+      display: block;
+      color: var(--yellow);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .hero-info-value {
+      color: #fff0e5;
+      font-size: 1.02rem;
+    }
+
+    .hero-quick-tags,
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-quick-tags { margin-top: 22px; }
+    .hero-badges { margin-top: 26px; }
+
+    .hero-quick-tags span,
+    .hero-badges span,
+    .review-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff1e7;
+      font-size: 0.92rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(16,10,8,0.78);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--yellow);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 6vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    .hero p {
+      max-width: 680px;
+      font-size: 1.08rem;
+      color: #ffe2ce;
+      margin: 18px 0 0;
+    }
+
+    .hero-actions,
+    .feedback-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 0 22px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.18) 50%, transparent 80%);
+      transform: translateX(-120%);
+      transition: transform 0.6s ease;
+    }
+
+    .btn:hover::after { transform: translateX(120%); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--yellow), #ffd467);
+      color: var(--black);
+      box-shadow: 0 0 0 rgba(255,183,3,0), 0 14px 28px rgba(255,183,3,0.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(255,183,3,0.36), 0 16px 30px rgba(255,183,3,0.28);
+    }
+
+    .btn-secondary {
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(17,17,17,0.62);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(232,93,4,0.24), 0 12px 24px rgba(0,0,0,0.28);
+      border-color: rgba(232,93,4,0.42);
+    }
+
+    section { padding: 30px 0 20px; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      margin: 0;
+    }
+
+    .section-head p {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .grid { display: grid; gap: 18px; }
+    .combo-grid { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .card-glow {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .card-glow::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,183,3,0.35), rgba(232,93,4,0.18), rgba(193,18,31,0.22));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: -1;
+    }
+
+    .card-glow:hover::before { opacity: 1; }
+
+    .poster-wrap {
+      position: relative;
+      overflow: hidden;
+      background: rgba(14, 9, 7, 0.92);
+      padding: 14px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .poster {
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      object-position: center;
+      background: transparent;
+    }
+
+    .combo-card {
+      transform: translateY(0) scale(1);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+        radial-gradient(circle at top right, rgba(255,183,3,0.12), transparent 28%);
+    }
+
+    .combo-card:hover {
+      transform: translateY(-10px) scale(1.01);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.42);
+      border-color: rgba(255,183,3,0.28);
+    }
+
+    .combo-card .poster { transition: transform 0.45s ease, filter 0.45s ease; }
+    .combo-card:hover .poster { transform: scale(1.04); filter: saturate(1.08) contrast(1.03); }
+
+    .combo-label,
+    .price-badge {
+      position: absolute;
+      top: 16px;
+      z-index: 2;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+    }
+
+    .combo-label {
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(17, 12, 10, 0.88);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--yellow);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .price-badge {
+      right: 16px;
+      min-width: 84px;
+      padding: 12px 14px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--yellow), #ffd467);
+      color: var(--black);
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.05;
+    }
+
+    .price-badge small {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      opacity: 0.8;
+    }
+
+    .card-body { padding: 18px 18px 20px; }
+    .card-title { margin: 0 0 6px; font-size: 1.18rem; text-transform: uppercase; }
+    .card-text { margin: 0; color: var(--muted); font-size: 0.96rem; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .feature-box,
+    .review-card,
+    .rating-card {
+      background:
+        linear-gradient(180deg, rgba(193,18,31,0.14), rgba(232,93,4,0.08)),
+        radial-gradient(circle at top right, rgba(255,183,3,0.08), transparent 35%);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .feature-box p,
+    .review-card p,
+    .rating-card p,
+    .review-list li,
+    .menu-copy p,
+    .rating-sub {
+      color: var(--muted);
+    }
+
+    .special-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 28px;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .special-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.42);
+      border-color: rgba(255,183,3,0.28);
+    }
+
+    .special-card:hover .price-badge {
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    .special-card img {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 20px;
+      background: rgba(14,9,7,0.92);
+      padding: 12px;
+    }
+
+    .special-content {
+      text-align: center;
+      max-width: 520px;
+    }
+
+    .milkshake-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: rgba(14,9,7,0.92);
+      border-radius: 22px;
+    }
+
+    .milkshake-image img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      max-height: 560px;
+    }
+
+    .fruity-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(120,35,0,.95), rgba(55,10,0,.95));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      min-height: 100%;
+    }
+
+    .fruity-poster {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0,0,0,.18);
+      border-radius: 22px;
+    }
+
+    .fruity-poster img {
+      width: 100%;
+      max-height: 620px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .fruity-content h3 {
+      margin-bottom: 16px;
+      font-size: clamp(28px, 4vw, 46px);
+    }
+
+    .fruity-content p {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #ffe8da;
+    }
+
+    .menu-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: stretch;
+      background: linear-gradient(135deg, rgba(255,183,3,0.12), rgba(193,18,31,0.1));
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .menu-copy { padding: 34px; }
+    .menu-copy h3 { margin: 0 0 10px; font-size: 2rem; }
+
+    .menu-check {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .menu-check span {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      color: var(--text);
+    }
+
+    .menu-image {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.45));
+    }
+
+    .menu-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 20px;
+      background: rgba(14, 9, 7, 0.9);
+      padding: 12px;
+    }
+
+    .review-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 18px;
+    }
+
+    .review-stars button {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--yellow);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .review-stars button.active {
+      background: linear-gradient(135deg, var(--yellow), #ffd467);
+      color: var(--black);
+      font-weight: 900;
+    }
+
+    .feedback-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .feedback-form input,
+    .feedback-form textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 14px 16px;
+    }
+
+    .feedback-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .info-grid { grid-template-columns: repeat(3, 1fr); }
+
+    .info-card {
+      padding: 24px;
+      min-height: 220px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    .info-card p, .info-card a { color: var(--muted); margin: 0; }
+
+    .map-link {
+      display: inline-flex;
+      margin-top: 14px;
+      color: var(--yellow) !important;
+      font-weight: 700;
+    }
+
+    .call-btn {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 18px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--yellow), #ffd467);
+      color: var(--black) !important;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(255,183,3,0.18);
+    }
+
+    .floating-menu {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 120;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--yellow), #ffd467);
+      color: var(--black);
+      font-weight: 900;
+      box-shadow: 0 0 20px rgba(255,183,3,0.32), 0 16px 32px rgba(0,0,0,0.36);
+    }
+
+    .floating-menu:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 26px rgba(255,183,3,0.42), 0 18px 36px rgba(0,0,0,0.4);
+    }
+
+    .footer {
+      padding: 28px 0 86px;
+      color: var(--muted);
+    }
+
+    .footer-box {
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    @media (max-width: 1050px) {
+      .hero-grid,
+      .menu-panel,
+      .split,
+      .info-grid,
+      .combo-grid,
+      .review-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-copy,
+      .hero-visual { min-height: 460px; }
+      .fruity-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+      .nav {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: calc(100% + 10px);
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(17,10,8,0.98);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+      }
+      .nav.open { display: flex; }
+      .hero { padding-top: 36px; }
+      .hero-grid,
+      .menu-panel,
+      .split,
+      .info-grid,
+      .combo-grid,
+      .review-layout,
+      .fruity-card {
+        grid-template-columns: 1fr;
+      }
+      .hero-copy,
+      .hero-visual { min-height: 380px; }
+      .hero-copy { padding: 28px; }
+      .hero-visual { padding: 22px; }
+      .menu-copy { padding: 24px; }
+      .section-head { align-items: start; flex-direction: column; }
+      h1 { font-size: clamp(2.4rem, 12vw, 4rem); }
+      .hero-logo-wrap { min-height: 180px; }
+      .hero-info { padding: 22px; }
+      .poster-wrap { min-height: 320px; }
+      .floating-menu { right: 14px; bottom: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="#top" class="brand">
+        <strong data-i18n="brand">My Street Food</strong>
+        <span data-i18n="brandSub">Burger • Hotdog • Fries • Milkshakes</span>
+      </a>
+
+      <button class="menu-toggle" aria-label="Open menu" id="menuToggle">☰</button>
+
+      <nav class="nav" id="mainNav">
+        <a href="#home" data-i18n="navHome">Home</a>
+        <a href="#combos" data-i18n="navCombos">Combos</a>
+        <a href="#specials" data-i18n="navSpecials">Specials</a>
+        <a href="#menu" data-i18n="navMenu">Menu</a>
+        <a href="#reviews" data-i18n="navReviews">Reviews</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+        <div class="lang-switch" aria-label="Language switcher">
+          <button class="active" data-lang="tl">TL</button>
+          <button data-lang="en">EN</button>
+          <button data-lang="de">DE</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="hero-logo-wrap">
+            <img class="hero-logo" src="assets/logo.png" alt="My Street Food logo" />
+          </div>
+          <div>
+            <div class="eyebrow" data-i18n="heroEyebrow">Street Food in Gingoog City</div>
+            <h1 data-i18n="heroTitle">My Street Food</h1>
+            <p data-i18n="heroText">Fresh street food, flavorful combos, and a menu you can open right away.</p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="menu.pdf" target="_blank" data-i18n="heroBtnMenu">Open Menu</a>
+              <a class="btn btn-secondary" href="#combos" data-i18n="heroBtnExplore">Explore our favorites</a>
+            </div>
+
+            <div class="hero-badges">
+              <span data-i18n="badge1">Burger & Fries</span>
+              <span data-i18n="badge2">Milkshakes</span>
+              <span data-i18n="badge3">Open daily 10:00 AM – 7:00 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-info">
+            <h3 data-i18n="visitTitle">Visit Us</h3>
+            <div class="hero-info-item">
+              <span class="hero-info-label" data-i18n="visitAddressLabel">Location</span>
+              <div class="hero-info-value">Purok Almaciga,<br />Brgy. Anakan,<br />Gingoog City</div>
+            </div>
+            <div class="hero-info-item">
+              <span class="hero-info-label" data-i18n="visitHoursLabel">Opening Hours</span>
+              <div class="hero-info-value" data-i18n="hoursText">Monday to Sunday<br />10:00 AM – 7:00 PM</div>
+            </div>
+            <div class="hero-info-item">
+              <span class="hero-info-label" data-i18n="visitPhoneLabel">Call Us</span>
+              <div class="hero-info-value"><a href="tel:09915779849">09915779849</a></div>
+            </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="menu.pdf" target="_blank" data-i18n="heroBtnMenu2">View Menu</a>
+              <a class="btn btn-secondary" href="#reviews" data-i18n="reviewBtn">Leave a Review</a>
+            </div>
+            <div class="hero-quick-tags">
+              <span data-i18n="tag1">Burger</span>
+              <span data-i18n="tag2">Hotdog</span>
+              <span data-i18n="tag3">Milkshake</span>
+              <span data-i18n="tag4">Fries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="combos">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="combosTitle">Popular Combos</h2>
+            <p data-i18n="combosText">Discover our most popular combos with burgers, hotdogs, fries, and ice-cold drinks.</p>
+          </div>
+        </div>
+
+        <div class="grid combo-grid">
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Best Seller</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo3.png" alt="Combo 3 Burger Fries Fruity Soda" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 3</h3>
+              <p class="card-text" data-i18n="combo3">Burger • Fries • Fruity Soda</p>
+            </div>
+          </article>
+
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Street Pick</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo1.png" alt="Combo 1 Hotdog Fries Fruity Soda" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 1</h3>
+              <p class="card-text" data-i18n="combo1">Hotdog Bun • Fries • Fruity Soda</p>
+            </div>
+          </article>
+
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Milkshake Combo</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo8.png" alt="Combo 8 Hotdog Fries Milkshake" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 8</h3>
+              <p class="card-text" data-i18n="combo8">Hotdog Bun • Fries • Milkshake</p>
+            </div>
+          </article>
+
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Fresh Combo</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo2.png" alt="Combo 2 Burger Fries Lemonade" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 2</h3>
+              <p class="card-text" data-i18n="combo2">Burger • Fries • Lemonade</p>
+            </div>
+          </article>
+
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Creamy Favorite</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo4.png" alt="Combo 4 Burger Fries Milkshake" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 4</h3>
+              <p class="card-text" data-i18n="combo4">Burger • Fries • Milkshake</p>
+            </div>
+          </article>
+
+          <article class="card card-glow combo-card">
+            <div class="poster-wrap"><span class="combo-label">Cool Lemonade</span><span class="price-badge"><small>Price</small>₱---</span><img class="poster" src="assets/combo6.png" alt="Combo 6 Hotdog Fries Lemonade" /></div>
+            <div class="card-body">
+              <h3 class="card-title">Combo 6</h3>
+              <p class="card-text" data-i18n="combo6">Hotdog Bun • Fries • Lemonade</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section id="specials">
+      <div class="container split">
+        <article class="feature-box card card-glow special-card">
+          <!-- SPECIAL PRICE: change only the value after ₱ -->
+          <span class="price-badge"><small>Price</small>₱79</span>
+
+          <img src="assets/siomai-rice.png" alt="Siomai Rice" />
+
+          <div class="special-content">
+            <h3 data-i18n="specialTitle">Special: Siomai Rice</h3>
+            <p data-i18n="specialText">Enjoy our Siomai Rice — savory, filling, and perfect when you want something satisfying.</p>
+          </div>
+        </article>
+
+        <div class="grid" style="gap:20px;">
+          <article class="feature-box card card-glow special-card">
+            <!-- SPECIAL PRICE: change only the value after ₱ -->
+            <span class="price-badge"><small>Price</small>₱59</span>
+
+            <div class="milkshake-image"><img src="assets/milkshakes.jpg" alt="Milkshake flavors" /></div>
+
+            <div class="card-body">
+              <h3 data-i18n="milkshakeTitle">Milkshake Flavors</h3>
+              <p data-i18n="milkshakeText">Ube, Avocado, Strawberry, Cookies & Cream, Buko Pandan, Chocolate, Mango, Choco Kisses, Leche Flan and Vanilla.</p>
+            </div>
+          </article>
+
+          <article class="fruity-card card-glow special-card">
+            <!-- SPECIAL PRICE: change only the value after ₱ -->
+            <span class="price-badge"><small>Price</small>₱69</span>
+
+            <div class="fruity-poster">
+              <img src="assets/fruity-milk.jpeg" alt="Fruity Milk Series" />
+            </div>
+
+            <div class="fruity-content">
+              <h3 data-i18n="fruityTitle">Fruity Milk Series</h3>
+              <p data-i18n="fruityText">Strawberry, Grapes and Green Apple are our fruity milk favorites. Freshly mixed, refreshing, and perfect with burgers or hotdogs.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu">
+      <div class="container">
+        <div class="menu-panel">
+          <div class="menu-copy">
+            <div class="eyebrow" data-i18n="pdfEyebrow">Menu Card</div>
+            <h3 data-i18n="pdfTitle">Menu Card</h3>
+            <p data-i18n="pdfText">Open our menu as a PDF and see all current offers, prices and drink combos.</p>
+
+            <div class="menu-check">
+              <span data-i18n="pdfCheck1">✔ One click to the menu</span>
+              <span data-i18n="pdfCheck2">✔ QR-code friendly</span>
+              <span data-i18n="pdfCheck3">✔ Easy to replace later</span>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="menu.pdf" target="_blank" data-i18n="pdfBtnOpen">Open PDF</a>
+              <a class="btn btn-secondary" href="menu.pdf" download data-i18n="pdfBtnDownload">Download PDF</a>
+            </div>
+          </div>
+          <div class="menu-image" aria-hidden="true"><img src="assets/menu.png" alt="Menu preview" /></div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="reviews">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="reviewsTitle">Reviews</h2>
+            <p data-i18n="reviewsText">Tell us how you liked the food and send your feedback directly to us.</p>
+          </div>
+        </div>
+
+        <div class="review-layout">
+          <article class="review-card card-glow">
+            <h3 data-i18n="feedbackBoxTitle">Leave a Review</h3>
+            <p data-i18n="feedbackBoxText">Tell us how you liked the food. Your feedback helps us improve and serve you better.</p>
+            <div class="review-stars" id="reviewStars">
+              <button type="button" data-value="1" aria-label="1 star">★</button>
+              <button type="button" data-value="2" aria-label="2 stars">★</button>
+              <button type="button" data-value="3" aria-label="3 stars">★</button>
+              <button type="button" data-value="4" aria-label="4 stars">★</button>
+              <button type="button" data-value="5" class="active" aria-label="5 stars">★</button>
+            </div>
+            <form class="feedback-form" id="feedbackForm">
+              <input type="text" id="guestName" placeholder="Iyong pangalan" data-placeholder-de="Dein Name" data-placeholder-en="Your name" data-placeholder-tl="Iyong pangalan" />
+              <textarea id="guestMessage" placeholder="Kamusta ang pagkain mo?" data-placeholder-de="Wie war dein Essen?" data-placeholder-en="How was your food?" data-placeholder-tl="Kamusta ang pagkain mo?"></textarea>
+              <div class="feedback-actions">
+                <button type="submit" class="btn btn-primary" data-i18n="feedbackBtn">Send via Messenger</button>
+                <a href="https://m.me/yourfacebookpage" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="openMessengerBtn">Open Messenger</a>
+              </div>
+            </form>
+            <p class="card-text" style="margin-top:14px;" data-i18n="messengerHint">Open Messenger and send us your rating and comment directly.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="contactTitle">Contact</h2>
+            <p data-i18n="contactText">Visit us in Gingoog City and enjoy fresh street food, tasty combos and refreshing drinks. We look forward to serving you.</p>
+          </div>
+        </div>
+
+        <div class="grid info-grid">
+          <article class="card info-card">
+            <h3 data-i18n="addressTitle">Address</h3>
+            <p>Purok Almaciga,<br />Brgy. Anakan,<br />Gingoog City</p>
+          </article>
+
+          <article class="card info-card">
+            <h3 data-i18n="hoursTitle">Opening Hours</h3>
+            <p data-i18n="hoursText">Monday to Sunday<br />10:00 AM – 7:00 PM</p>
+          </article>
+
+          <article class="card info-card">
+            <h3 data-i18n="phoneTitle">Phone</h3>
+            <p><a href="tel:09915779849">09915779849</a></p>
+            <p style="margin-top:14px;" data-i18n="phoneHint">For orders, questions or quick contact.</p>
+            <a class="call-btn" href="tel:09915779849" data-i18n="callBtn">Call now</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a href="menu.pdf" class="floating-menu" target="_blank" data-i18n="floatingMenu">🍔 Menu</a>
+
+  <footer class="footer">
+    <div class="container footer-box">
+      <div>
+        <strong data-i18n="brand">My Street Food</strong><br />
+        <span data-i18n="footerLine">Street Food • Burger • Hotdog • Fries • Milkshakes</span>
+      </div>
+      <div data-i18n="footerRight">Open daily from 10:00 AM to 7:00 PM</div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('mainNav');
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle.addEventListener('click', () => nav.classList.toggle('open'));
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => nav.classList.remove('open')));
+
+    const translations = {
+      de: {
+        brand: 'My Street Food',
+        brandSub: 'Burger • Hotdog • Fries • Milkshakes',
+        navHome: 'Home',
+        navCombos: 'Combos',
+        navSpecials: 'Specials',
+        navMenu: 'Menü',
+        navReviews: 'Bewertungen',
+        navContact: 'Kontakt',
+        heroEyebrow: 'Street Food in Gingoog City',
+        heroTitle: 'My Street Food',
+        heroText: 'Frisches Street Food, kräftige Combos und eine Speisekarte, die du sofort öffnen kannst.',
+        heroBtnMenu: 'Menü öffnen',
+        heroBtnExplore: 'Unsere Favoriten ansehen',
+        heroBtnMenu2: 'Menü ansehen',
+        reviewBtn: 'Bewertung senden',
+        visitTitle: 'Komm vorbei',
+        visitAddressLabel: 'Adresse',
+        visitHoursLabel: 'Öffnungszeiten',
+        visitPhoneLabel: 'Telefon',
+        tag1: 'Burger',
+        tag2: 'Hotdog',
+        tag3: 'Milkshake',
+        tag4: 'Fries',
+        badge1: 'Burger & Fries',
+        badge2: 'Milkshakes',
+        badge3: 'Täglich 10:00 – 19:00',
+        combosTitle: 'Beliebte Combos',
+        combosText: 'Entdecke unsere beliebtesten Combos mit Burgern, Hotdogs, Fries und eisgekühlten Drinks.',
+        combo1: 'Hotdog Bun • Fries • Fruity Soda',
+        combo2: 'Burger • Fries • Lemonade',
+        combo3: 'Burger • Fries • Fruity Soda',
+        combo4: 'Burger • Fries • Milkshake',
+        combo6: 'Hotdog Bun • Fries • Lemonade',
+        combo8: 'Hotdog Bun • Fries • Milkshake',
+        specialTitle: 'Special: Siomai Rice',
+        specialText: 'Genieße unseren Siomai Rice – herzhaft, sättigend und perfekt für den schnellen Hunger.',
+        milkshakeTitle: 'Milkshake Sorten',
+        milkshakeText: 'Ube, Avocado, Strawberry, Cookies & Cream, Buko Pandan, Chocolate, Mango, Choco Kisses, Leche Flan und Vanilla.',
+        fruityTitle: 'Fruity Milk Series',
+        fruityText: 'Strawberry, Grapes und Green Apple sind unsere fruchtigen Milch-Favoriten. Frisch gemixt, erfrischend und perfekt zu Burgern oder Hotdogs.',
+        pdfEyebrow: 'Menü Karte',
+        pdfTitle: 'Menü Karte',
+        pdfText: 'Öffne unsere Speisekarte als PDF und sieh dir alle aktuellen Angebote, Preise und Getränkekombinationen an.',
+        pdfCheck1: '✔ Ein Klick zur Speisekarte',
+        pdfCheck2: '✔ QR-Code freundlich',
+        pdfCheck3: '✔ Datei später einfach austauschen',
+        pdfBtnOpen: 'PDF öffnen',
+        pdfBtnDownload: 'PDF herunterladen',
+        reviewsTitle: 'Bewertungen',
+        reviewsText: 'Sag uns, wie dir das Essen gefallen hat, und sende uns dein Feedback direkt.',
+        feedbackBoxTitle: 'Bewertung senden',
+        feedbackBoxText: 'Sag uns, wie dir das Essen gefallen hat. Dein Feedback hilft uns, noch besser zu werden.',
+        feedbackBtn: 'Per Messenger senden',
+        openMessengerBtn: 'Messenger öffnen',
+        messengerHint: 'Öffne den Messenger und sende uns deine Sternebewertung und deinen Kommentar direkt.',
+        contactTitle: 'Kontakt',
+        contactText: 'Besuche uns in Gingoog City und genieße frisches Street Food, leckere Combos und erfrischende Drinks. Wir freuen uns auf deinen Besuch.',
+        addressTitle: 'Adresse',
+                hoursTitle: 'Öffnungszeiten',
+        hoursText: 'Montag bis Sonntag<br />10:00 AM – 7:00 PM',
+        phoneTitle: 'Telefon',
+        phoneHint: 'Für Bestellungen, Rückfragen oder schnelle Kontaktaufnahme.',
+        callBtn: 'Jetzt anrufen',
+                floatingMenu: '🍔 Menü',
+        footerLine: 'Street Food • Burger • Hotdog • Fries • Milkshakes',
+        footerRight: 'Täglich geöffnet von 10:00 AM bis 7:00 PM'
+      },
+      en: {
+        brand: 'My Street Food',
+        brandSub: 'Burger • Hotdog • Fries • Milkshakes',
+        navHome: 'Home',
+        navCombos: 'Combos',
+        navSpecials: 'Specials',
+        navMenu: 'Menu',
+        navReviews: 'Reviews',
+        navContact: 'Contact',
+        heroEyebrow: 'Street Food in Gingoog City',
+        heroTitle: 'My Street Food',
+        heroText: 'Fresh street food, flavorful combos, and a menu you can open right away.',
+        heroBtnMenu: 'Open menu',
+        heroBtnExplore: 'Explore our favorites',
+        heroBtnMenu2: 'View menu',
+        reviewBtn: 'Leave a review',
+        visitTitle: 'Visit us',
+        visitAddressLabel: 'Location',
+        visitHoursLabel: 'Opening hours',
+        visitPhoneLabel: 'Call us',
+        tag1: 'Burger',
+        tag2: 'Hotdog',
+        tag3: 'Milkshake',
+        tag4: 'Fries',
+        badge1: 'Burger & Fries',
+        badge2: 'Milkshakes',
+        badge3: 'Open daily 10:00 AM – 7:00 PM',
+        combosTitle: 'Popular Combos',
+        combosText: 'Discover our most popular combos with burgers, hotdogs, fries, and ice-cold drinks.',
+        combo1: 'Hotdog Bun • Fries • Fruity Soda',
+        combo2: 'Burger • Fries • Lemonade',
+        combo3: 'Burger • Fries • Fruity Soda',
+        combo4: 'Burger • Fries • Milkshake',
+        combo6: 'Hotdog Bun • Fries • Lemonade',
+        combo8: 'Hotdog Bun • Fries • Milkshake',
+        specialTitle: 'Special: Siomai Rice',
+        specialText: 'Enjoy our Siomai Rice — savory, filling, and perfect when you want something satisfying.',
+        milkshakeTitle: 'Milkshake Flavors',
+        milkshakeText: 'Ube, Avocado, Strawberry, Cookies & Cream, Buko Pandan, Chocolate, Mango, Choco Kisses, Leche Flan and Vanilla.',
+        fruityTitle: 'Fruity Milk Series',
+        fruityText: 'Strawberry, Grapes and Green Apple are our fruity milk favorites. Freshly mixed, refreshing, and perfect with burgers or hotdogs.',
+        pdfEyebrow: 'Menu Card',
+        pdfTitle: 'Menu Card',
+        pdfText: 'Open our menu as a PDF and see all current offers, prices and drink combos.',
+        pdfCheck1: '✔ One click to the menu',
+        pdfCheck2: '✔ QR-code friendly',
+        pdfCheck3: '✔ Easy to replace later',
+        pdfBtnOpen: 'Open PDF',
+        pdfBtnDownload: 'Download PDF',
+        reviewsTitle: 'Reviews',
+        reviewsText: 'Tell us how you liked the food and send your feedback directly to us.',
+        feedbackBoxTitle: 'Leave a Review',
+        feedbackBoxText: 'Tell us how you liked the food. Your feedback helps us improve and serve you better.',
+        feedbackBtn: 'Send via Messenger',
+        openMessengerBtn: 'Open Messenger',
+        messengerHint: 'Open Messenger and send us your rating and comment directly.',
+        contactTitle: 'Contact',
+        contactText: 'Visit us in Gingoog City and enjoy fresh street food, tasty combos and refreshing drinks. We look forward to serving you.',
+        addressTitle: 'Address',
+                hoursTitle: 'Opening Hours',
+        hoursText: 'Monday to Sunday<br />10:00 AM – 7:00 PM',
+        phoneTitle: 'Phone',
+        phoneHint: 'For orders, questions or quick contact.',
+        callBtn: 'Call now',
+                floatingMenu: '🍔 Menu',
+        footerLine: 'Street Food • Burger • Hotdog • Fries • Milkshakes',
+        footerRight: 'Open daily from 10:00 AM to 7:00 PM'
+      },
+      tl: {
+        brand: 'My Street Food',
+        brandSub: 'Burger • Hotdog • Fries • Milkshakes',
+        navHome: 'Home',
+        navCombos: 'Mga Combo',
+        navSpecials: 'Espesyal',
+        navMenu: 'Menu',
+        navReviews: 'Reviews',
+        navContact: 'Contact',
+        heroEyebrow: 'Street Food sa Gingoog City',
+        heroTitle: 'My Street Food',
+        heroText: 'Masarap na street food, flavorful na combos, at menu na puwede mong buksan agad.',
+        heroBtnMenu: 'Buksan ang menu',
+        heroBtnExplore: 'Tingnan ang favorites',
+        heroBtnMenu2: 'Tingnan ang menu',
+        reviewBtn: 'Mag-iwan ng review',
+        visitTitle: 'Bisitahin kami',
+        visitAddressLabel: 'Lokasyon',
+        visitHoursLabel: 'Opening hours',
+        visitPhoneLabel: 'Tawagan kami',
+        tag1: 'Burger',
+        tag2: 'Hotdog',
+        tag3: 'Milkshake',
+        tag4: 'Fries',
+        badge1: 'Burger at Fries',
+        badge2: 'Milkshakes',
+        badge3: 'Araw-araw 10:00 AM – 7:00 PM',
+        combosTitle: 'Mga Paboritong Combo',
+        combosText: 'Tuklasin ang mga paboritong combo na may burger, hotdog, fries, at malamig na drinks.',
+        combo1: 'Hotdog Bun • Fries • Fruity Soda',
+        combo2: 'Burger • Fries • Lemonade',
+        combo3: 'Burger • Fries • Fruity Soda',
+        combo4: 'Burger • Fries • Milkshake',
+        combo6: 'Hotdog Bun • Fries • Lemonade',
+        combo8: 'Hotdog Bun • Fries • Milkshake',
+        specialTitle: 'Espesyal: Siomai Rice',
+        specialText: 'Tikman ang aming Siomai Rice — malinamnam, nakakabusog, at swak kapag gusto mo ng mabilis pero sulit na kain.',
+        milkshakeTitle: 'Mga Flavor ng Milkshake',
+        milkshakeText: 'Ube, Avocado, Strawberry, Cookies & Cream, Buko Pandan, Chocolate, Mango, Choco Kisses, Leche Flan at Vanilla.',
+        fruityTitle: 'Fruity Milk Series',
+        fruityText: 'Strawberry, Grapes at Green Apple ang aming fruity milk favorites. Freshly mixed, refreshing, at bagay sa burgers o hotdogs.',
+        pdfEyebrow: 'Menu Card',
+        pdfTitle: 'Menu Card',
+        pdfText: 'Buksan ang aming PDF menu at tingnan ang lahat ng kasalukuyang offers, presyo at drink combos.',
+        pdfCheck1: '✔ Isang click papunta sa menu',
+        pdfCheck2: '✔ Friendly sa QR code',
+        pdfCheck3: '✔ Madaling palitan sa susunod',
+        pdfBtnOpen: 'Buksan ang PDF',
+        pdfBtnDownload: 'I-download ang PDF',
+        reviewsTitle: 'Reviews',
+        reviewsText: 'Sabihin sa amin kung kumusta ang pagkain at ipadala ang inyong feedback diretso sa amin.',
+        feedbackBoxTitle: 'Mag-iwan ng Review',
+        feedbackBoxText: 'Sabihin mo sa amin kung kumusta ang pagkain. Mahalaga ang inyong feedback para mas mapabuti pa namin ang serbisyo.',
+        feedbackBtn: 'Ipadala sa Messenger',
+        openMessengerBtn: 'Buksan ang Messenger',
+        messengerHint: 'Buksan ang Messenger at ipadala sa amin ang inyong stars at comment diretso.',
+        contactTitle: 'Contact',
+        contactText: 'Bisitahin kami sa Gingoog City at tikman ang sariwang street food, masasarap na combo at refreshing drinks. Inaanyayahan namin kayo.',
+        addressTitle: 'Address',
+                hoursTitle: 'Opening Hours',
+        hoursText: 'Monday to Sunday<br />10:00 AM – 7:00 PM',
+        phoneTitle: 'Telepono',
+        phoneHint: 'Para sa orders, tanong o mabilis na contact.',
+        callBtn: 'Tumawag ngayon',
+                floatingMenu: '🍔 Menu',
+        footerLine: 'Street Food • Burger • Hotdog • Fries • Milkshakes',
+        footerRight: 'Bukas araw-araw mula 10:00 AM hanggang 7:00 PM'
+      }
+    };
+
+    const translatable = document.querySelectorAll('[data-i18n]');
+    const langButtons = document.querySelectorAll('[data-lang]');
+    const reviewStars = document.querySelectorAll('#reviewStars button');
+    const feedbackForm = document.getElementById('feedbackForm');
+    let selectedRating = 5;
+
+    reviewStars.forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedRating = Number(button.dataset.value || '5');
+        reviewStars.forEach((btn) => btn.classList.toggle('active', Number(btn.dataset.value) === selectedRating));
+      });
+    });
+
+    function updatePlaceholders(lang) {
+      document.querySelectorAll('[data-placeholder-' + lang + ']').forEach((el) => {
+        const value = el.getAttribute('data-placeholder-' + lang);
+        if (value) el.setAttribute('placeholder', value);
+      });
+    }
+
+    function setLanguage(lang) {
+      document.documentElement.lang = lang;
+      translatable.forEach(el => {
+        const key = el.dataset.i18n;
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      updatePlaceholders(lang);
+      localStorage.setItem('msf-lang', lang);
+    }
+
+    menuToggle.addEventListener('click', () => nav.classList.toggle('open'));
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => nav.classList.remove('open')));
+    langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    feedbackForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const currentLang = document.documentElement.lang || 'tl';
+      const name = document.getElementById('guestName').value.trim() || (currentLang === 'de' ? 'Gast' : currentLang === 'en' ? 'Guest' : 'Guest');
+      const message = document.getElementById('guestMessage').value.trim() || '-';
+      const labels = {
+        de: { title: 'Neue Bewertung', name: 'Name', rating: 'Bewertung', feedback: 'Feedback' },
+        en: { title: 'New review', name: 'Name', rating: 'Rating', feedback: 'Feedback' },
+        tl: { title: 'Bagong feedback', name: 'Pangalan', rating: 'Rating', feedback: 'Feedback' },
+      };
+      const t = labels[currentLang] || labels.tl;
+      const raw = `${t.title}\n${t.name}: ${name}\n${t.rating}: ${selectedRating}/5\n${t.feedback}: ${message}`;
+      const messengerUrl = 'https://m.me/yourfacebookpage';
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(raw).catch(() => {});
+      }
+      window.open(messengerUrl, '_blank', 'noopener');
+      feedbackForm.reset();
+      selectedRating = 5;
+      reviewStars.forEach((btn) => btn.classList.toggle('active', Number(btn.dataset.value) === selectedRating));
+    });
+
+    setLanguage(localStorage.getItem('msf-lang') || 'tl');
+  </script>
+</body>
+</html>
